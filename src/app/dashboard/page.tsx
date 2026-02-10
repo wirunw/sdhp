@@ -1,6 +1,10 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+
+// Opt out of static optimization to prevent build-time rendering errors
+export const dynamic = 'force-dynamic'
+
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
@@ -177,7 +181,7 @@ export default function DashboardPage() {
                               const order = { AWARENESS: 1, LITERACY: 2, PROFICIENCY: 3, EXPERTISE: 4 }
                               return order[b.results?.overallCompetencyLevel as keyof typeof order] -
                                      order[a.results?.overallCompetencyLevel as keyof typeof order]
-                            })[0].results?.overallCompetencyLevel)
+                            })[0].results?.overallCompetencyLevel ?? null)
                         : '-'}
                     </div>
                     <p className="text-xs text-slate-500">จากทุกการประเมิน</p>

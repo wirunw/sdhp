@@ -1,6 +1,10 @@
 'use client'
 
 import { useState } from 'react'
+
+// Opt out of static optimization to prevent build-time rendering errors
+export const dynamic = 'force-dynamic'
+
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
