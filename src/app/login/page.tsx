@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 
 // Opt out of static optimization to prevent build-time rendering errors
 export const dynamic = 'force-dynamic'
@@ -14,7 +14,7 @@ import { Label } from '@/components/ui/label'
 import { Lock, Shield, Activity } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { login } = useAuth()
@@ -113,5 +113,20 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-emerald-50 p-4">
+        <div className="text-center">
+          <Activity className="h-12 w-12 text-emerald-600 mx-auto mb-4 animate-pulse" />
+          <p className="text-slate-600">กำลังโหลด...</p>
+        </div>
+      </div>
+    }>
+      <LoginForm />
+    </Suspense>
   )
 }
