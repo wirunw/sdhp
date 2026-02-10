@@ -1,0 +1,149 @@
+// SDHP Digital Competency Assessment Schema
+// เครื่องมือประเมินสมรรถนะบุคลากรสาธารณสุขยุคดิจิทัล
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ประเภทบทบาทหน้าที่ (5 กลุ่ม)
+enum RoleType {
+  EXECUTIVE              // ผู้บริหาร
+  CLINICAL_STAFF         // ผู้ปฏิบัติงานทางการแพทย์
+  CLINICAL_SUPPORT       // ผู้ปฏิบัติงานสนับสนุนการแพทย์
+  BACK_OFFICE            // ผู้ปฏิบัติงานทั่วไป
+  IT_SUPPORT             // ผู้ปฏิบัติงานด้านสารสนเทศ
+}
+
+// ประเภทหน่วยงาน
+enum OrganizationType {
+  PRIVATE_HOSPITAL           // โรงพยาบาลเอกชน
+  GENERAL_HOSPITAL           // โรงพยาบาลศูนย์ / โรงพยาบาลทั่วไป
+  UNIVERSITY_HOSPITAL        // โรงพยาบาลมหาวิทยาลัย
+  CENTRAL_ADMIN              // หน่วยงานส่วนกลาง/ส่วนบริหาร
+  COMMUNITY_HOSPITAL         // โรงพยาบาลชุมชน
+  HEALTH_CENTER              // รพ.สต. / ศูนย์สุขภาพชุมชน
+}
+
+// ระดับความถนัดดิจิทัล (ประเมินตนเอง)
+enum ProficiencyLevel {
+  BEGINNER                   // เริ่มต้น
+  INTERMEDIATE               // ปานกลาง
+  ADVANCED                   // สูง
+}
+
+// ประสบการณ์การทำงาน
+enum ExperienceLevel {
+  LESS_THAN_3_YEARS          // น้อยกว่า 3 ปี
+  THREE_TO_7_YEARS           // 3-7 ปี
+  EIGHT_TO_15_YEARS          // 8-15 ปี
+  MORE_THAN_15_YEARS         // มากกว่า 15 ปี
+}
+
+// 5 มิติสมรรถนะดิจิทัล
+enum DimensionType {
+  TECH_LITERACY              // การรู้เท่าทันเทคโนโลยี (TL)
+  DATA_ANALYSIS              // การวิเคราะห์ข้อมูล (DA)
+  DIGITAL_COMMUNICATION      // การสื่อสารดิจิทัล (DC)
+  INNOVATION_MINDSET         // แนวคิดเชิงนวัตกรรม (IM)
+  DIGITAL_ETHICS             // จริยธรรมดิจิทัล (DE)
+}
+
+// ระดับสมรรถนะตามกรอบ SDHP
+enum CompetencyLevel {
+  AWARENESS                  // ระดับ A (1.00-1.99)
+  LITERACY                   // ระดับ L (2.00-2.99)
+  PROFICIENCY                // ระดับ P (3.00-3.99)
+  EXPERTISE                  // ระดับ E (4.00-4.99)
+}
+
+// การประเมินแต่ละครั้ง
+model Assessment {
+  id                         String            @id @default(cuid())
+  role                       RoleType
+  experienceLevel            ExperienceLevel
+  organizationType           OrganizationType
+  selfAssessedProficiency    ProficiencyLevel
+
+  // ข้อมูลทั่วไปเพิ่มเติม (optional)
+  name                       String?
+  department                 String?
+
+  // วันที่ทำการประเมิน
+  createdAt                  DateTime          @default(now())
+
+  // ความสัมพันธ์
+  results                    AssessmentResult?
+  responses                  ScenarioResponse[]
+  feedback                   Feedback?
+}
+
+// ผลการประเมินรายมิติ
+model AssessmentResult {
+  id                         String            @id @default(cuid())
+  assessmentId               String            @unique
+  assessment                 Assessment        @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+
+  // คะแนนรายมิติ (ค่าเฉลี่ย)
+  techLiteracyScore          Float?            // TL
+  dataAnalysisScore          Float?            // DA
+  digitalCommunicationScore  Float?            // DC
+  innovationMindsetScore     Float?            // IM
+  digitalEthicsScore         Float?            // DE
+
+  // ระดับสมรรถนะรายมิติ
+  techLiteracyLevel          CompetencyLevel?
+  dataAnalysisLevel          CompetencyLevel?
+  digitalCommunicationLevel  CompetencyLevel?
+  innovationMindsetLevel     CompetencyLevel?
+  digitalEthicsLevel         CompetencyLevel?
+
+  // ค่าเฉลี่ยรวมทุกมิติ
+  overallAverageScore        Float?
+  overallCompetencyLevel     CompetencyLevel?
+
+  // ร้อยละที่ผ่านเกณฑ์รายมิติ
+  techLiteracyPassRate       Float?
+  dataAnalysisPassRate       Float?
+  digitalCommunicationPassRate Float?
+  innovationMindsetPassRate  Float?
+  digitalEthicsPassRate      Float?
+
+  createdAt                  DateTime          @default(now())
+  updatedAt                  DateTime          @updatedAt
+}
+
+// คำตอบรายข้อคำถามสถานการณ์จำลอง
+model ScenarioResponse {
+  id                         String            @id @default(cuid())
+  assessmentId               String
+  assessment                 Assessment        @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+
+  dimension                  DimensionType
+  questionNumber             Int               // หมายเลขข้อ (1-25)
+  questionText               String            // เนื้อหาคำถาม
+  score                      Float             // คะแนน (1-5)
+
+  createdAt                  DateTime          @default(now())
+}
+
+// ความคิดเห็นเชิงลึก (คำถามปลายเปิด)
+model Feedback {
+  id                         String            @id @default(cuid())
+  assessmentId               String            @unique
+  assessment                 Assessment        @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+
+  // ปัญหาและอุปสรรค
+  challenges                 String?
+  // ข้อเสนอแนะ
+  suggestions                String?
+  // ความต้องการด้านการอบรม
+  trainingNeeds              String?
+
+  createdAt                  DateTime          @default(now())
+  updatedAt                  DateTime          @updatedAt
+}
