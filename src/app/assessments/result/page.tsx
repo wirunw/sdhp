@@ -395,7 +395,7 @@ export default function AssessmentResultPage() {
 
               {result.hrdRoadmap.gapAnalysis.priorityDimensions.length > 0 && (
                 <div>
-                  <label className="text-slate-500 text-sm block mb-2">มิติที่ต้องเร่งพัฒนา (คะแนน < 3.0)</label>
+                  <label className="text-slate-500 text-sm block mb-2">มิติที่ต้องเร่งพัฒนา (คะแนน &lt; 3.0)</label>
                   <div className="flex flex-wrap gap-2">
                     {result.hrdRoadmap.gapAnalysis.priorityDimensions.map((dim, idx) => (
                       <Badge key={idx} className="bg-orange-500/10 text-orange-400 border-orange-500/30">
