@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { generateHRDRoadmap } from '@/lib/recommendations'
 
 // บันทึกการประเมินใหม่
 export async function POST(request: NextRequest) {
@@ -92,6 +93,21 @@ export async function POST(request: NextRequest) {
     const digitalEthicsLevel = getCompetencyLevel(digitalEthicsScore) as any
     const overallCompetencyLevel = getCompetencyLevel(overallAverageScore) as any
 
+    // สร้าง HRD Roadmap recommendations
+    const hrdRoadmap = generateHRDRoadmap({
+      role,
+      experienceLevel,
+      organizationType,
+      selfAssessedProficiency,
+      scores: {
+        techLiteracyScore,
+        dataAnalysisScore,
+        digitalCommunicationScore,
+        innovationMindsetScore,
+        digitalEthicsScore,
+      },
+    })
+
     // สร้างข้อมูลผลลัพธ์ที่จะส่งกลับ (ไม่บันทึกลง database)
     const result = {
       formData: {
@@ -118,6 +134,7 @@ export async function POST(request: NextRequest) {
       },
       answers,
       feedback,
+      hrdRoadmap,
       createdAt: new Date().toISOString(),
     }
 

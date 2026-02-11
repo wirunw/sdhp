@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { ArrowLeft, Download, TrendingUp, Activity, Brain, Shield, Lightbulb, Users, Download as DownloadIcon } from 'lucide-react'
+import { ArrowLeft, Download, TrendingUp, Activity, Brain, Shield, Lightbulb, Users, Download as DownloadIcon, Rocket, Clock, Target, AlertCircle, CheckCircle2, Zap } from 'lucide-react'
 
 interface AssessmentResult {
   formData: {
@@ -36,6 +36,25 @@ interface AssessmentResult {
     challenges: string
     suggestions: string
     trainingNeeds: string
+  }
+  hrdRoadmap: {
+    overallStrategy: string
+    phases: Array<{
+      phase: string
+      phaseName: string
+      timeframe: string
+      goal: string
+      actionItems: string[]
+      priority: 'high' | 'medium' | 'low'
+      dimensions: string[]
+    }>
+    gapAnalysis: {
+      lowestDimension: string
+      lowestScore: number | null
+      priorityDimensions: string[]
+    }
+    roleSpecificRecommendations: string[]
+    immediateActions: string[]
   }
   createdAt: string
 }
@@ -106,6 +125,30 @@ export default function AssessmentResultPage() {
       ['อุปสรรคหรือความท้าทาย', result.feedback.challenges || '-'],
       ['ข้อเสนอแนะ', result.feedback.suggestions || '-'],
       ['ความต้องการด้านการอบรม', result.feedback.trainingNeeds || '-'],
+      ['', ''],
+      ['=== HRD Roadmap Recommendations ==='],
+      ['Overall Strategy', result.hrdRoadmap.overallStrategy],
+      ['', ''],
+      ['Gap Analysis'],
+      ['มิติที่คะแนนต่ำสุด', result.hrdRoadmap.gapAnalysis.lowestDimension],
+      ['คะแนนต่ำสุด', result.hrdRoadmap.gapAnalysis.lowestScore?.toFixed(2) || '-'],
+      ['มิติที่ต้องเร่งพัฒนา', Array.isArray(result.hrdRoadmap.gapAnalysis.priorityDimensions) ? result.hrdRoadmap.gapAnalysis.priorityDimensions.join(', ') : '-'],
+      ['', ''],
+      ['Immediate Actions'],
+      ...result.hrdRoadmap.immediateActions.map(action => [action]),
+      ['', ''],
+      ['Role-Specific Recommendations'],
+      ...result.hrdRoadmap.roleSpecificRecommendations.map(rec => [rec]),
+      ['', ''],
+      ['Phase Recommendations'],
+      ...result.hrdRoadmap.phases.flatMap(phase => [
+        '',
+        [`${phase.phase}: ${phase.phaseName}`],
+        [`เวลา: ${phase.timeframe}`],
+        [`เป้าหมาย: ${phase.goal}`],
+        ['Priority', phase.priority],
+        ...phase.actionItems.map(item => [item]),
+      ]),
     ]
 
     const csvContent = rows.map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')).join('\n')
@@ -135,6 +178,24 @@ export default function AssessmentResultPage() {
       case 'LITERACY': return 'bg-orange-500/10 text-orange-400 border-orange-500/30'
       case 'AWARENESS': return 'bg-red-500/10 text-red-400 border-red-500/30'
       default: return 'bg-slate-500/10 text-slate-400 border-slate-500/30'
+    }
+  }
+
+  const getPriorityBadgeColor = (priority: string) => {
+    switch (priority) {
+      case 'high': return 'bg-red-500/10 text-red-400 border-red-500/30'
+      case 'medium': return 'bg-orange-500/10 text-orange-400 border-orange-500/30'
+      case 'low': return 'bg-blue-500/10 text-blue-400 border-blue-500/30'
+      default: return 'bg-slate-500/10 text-slate-400 border-slate-500/30'
+    }
+  }
+
+  const getPhaseIcon = (phase: string) => {
+    switch (phase) {
+      case 'Phase 1': return Zap
+      case 'Phase 2': return Target
+      case 'Phase 3': return Rocket
+      default: return Clock
     }
   }
 
@@ -311,6 +372,175 @@ export default function AssessmentResultPage() {
               </CardContent>
             </Card>
           )}
+
+          {/* Gap Analysis */}
+          <Card className="bg-slate-900/80 backdrop-blur-xl border-slate-800 shadow-2xl">
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-gradient-to-br from-rose-500 to-pink-500 rounded-xl shadow-lg shadow-rose-500/25">
+                  <AlertCircle className="h-5 w-5 text-white" />
+                </div>
+                <CardTitle className="text-xl text-white">การวิเคราะห์ช่องว่าง (Gap Analysis)</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="p-4 bg-rose-500/10 border border-rose-500/30 rounded-xl">
+                <div className="flex items-center gap-2 mb-2">
+                  <AlertCircle className="h-5 w-5 text-rose-400" />
+                  <span className="font-semibold text-rose-400">มิติที่คะแนนต่ำสุด</span>
+                </div>
+                <p className="text-2xl font-bold text-white">{result.hrdRoadmap.gapAnalysis.lowestDimension}</p>
+                <p className="text-slate-400 text-sm mt-1">คะแนน: {result.hrdRoadmap.gapAnalysis.lowestScore?.toFixed(2) || '-'}</p>
+              </div>
+
+              {result.hrdRoadmap.gapAnalysis.priorityDimensions.length > 0 && (
+                <div>
+                  <label className="text-slate-500 text-sm block mb-2">มิติที่ต้องเร่งพัฒนา (คะแนน < 3.0)</label>
+                  <div className="flex flex-wrap gap-2">
+                    {result.hrdRoadmap.gapAnalysis.priorityDimensions.map((dim, idx) => (
+                      <Badge key={idx} className="bg-orange-500/10 text-orange-400 border-orange-500/30">
+                        {dim}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Immediate Actions */}
+          <Card className="bg-gradient-to-br from-amber-500/10 to-orange-500/10 backdrop-blur-xl border-amber-500/30 shadow-2xl">
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl shadow-lg shadow-amber-500/25">
+                  <Zap className="h-5 w-5 text-white" />
+                </div>
+                <CardTitle className="text-xl text-white">การดำเนินการทันที (Immediate Actions)</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-3">
+                {result.hrdRoadmap.immediateActions.map((action, idx) => (
+                  <li key={idx} className="flex items-start gap-3">
+                    <div className="mt-0.5 flex-shrink-0">
+                      <CheckCircle2 className="h-5 w-5 text-amber-400" />
+                    </div>
+                    <span className="text-white">{action}</span>
+                  </li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
+
+          {/* HRD Roadmap */}
+          <Card className="bg-slate-900/80 backdrop-blur-xl border-slate-800 shadow-2xl">
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl shadow-lg shadow-blue-500/25">
+                  <Rocket className="h-5 w-5 text-white" />
+                </div>
+                <CardTitle className="text-xl text-white">HRD Roadmap: แผนพัฒนาทักษะดิจิทัล 3 ระยะ</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <p className="text-slate-300 bg-slate-800/50 p-4 rounded-xl border-l-4 border-blue-500">
+                {result.hrdRoadmap.overallStrategy}
+              </p>
+
+              <div className="space-y-6">
+                {result.hrdRoadmap.phases.map((phase, idx) => {
+                  const PhaseIcon = getPhaseIcon(phase.phase)
+                  return (
+                    <div key={idx} className="relative">
+                      {/* Phase connector line */}
+                      {idx < result.hrdRoadmap.phases.length - 1 && (
+                        <div className="absolute left-6 top-16 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 to-purple-500" />
+                      )}
+
+                      <Card className="bg-slate-800/50 border-slate-700 ml-4">
+                        <CardHeader>
+                          <div className="flex items-start gap-4">
+                            <div className={`p-3 rounded-xl shadow-lg ${
+                              phase.phase === 'Phase 1' ? 'bg-gradient-to-br from-rose-500 to-orange-500 shadow-rose-500/25' :
+                              phase.phase === 'Phase 2' ? 'bg-gradient-to-br from-blue-500 to-cyan-500 shadow-blue-500/25' :
+                              'bg-gradient-to-br from-purple-500 to-pink-500 shadow-purple-500/25'
+                            }`}>
+                              <PhaseIcon className="h-6 w-6 text-white" />
+                            </div>
+                            <div className="flex-1">
+                              <div className="flex items-center gap-3 mb-2">
+                                <Badge className="bg-blue-500/10 text-blue-400 border-blue-500/30">
+                                  {phase.phase}
+                                </Badge>
+                                <Badge className={getPriorityBadgeColor(phase.priority)}>
+                                  {phase.priority} priority
+                                </Badge>
+                              </div>
+                              <CardTitle className="text-lg text-white mb-1">{phase.phaseName}</CardTitle>
+                              <p className="text-slate-400 text-sm flex items-center gap-2">
+                                <Clock className="h-4 w-4" />
+                                {phase.timeframe}
+                              </p>
+                            </div>
+                          </div>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                          <div>
+                            <label className="text-slate-500 text-sm block mb-2">เป้าหมาย</label>
+                            <p className="text-white bg-slate-700/50 p-3 rounded-lg">{phase.goal}</p>
+                          </div>
+                          <div>
+                            <label className="text-slate-500 text-sm block mb-2">Action Items</label>
+                            <ul className="space-y-2">
+                              {phase.actionItems.map((item, itemIdx) => (
+                                <li key={itemIdx} className="flex items-start gap-3">
+                                  <div className="mt-0.5 flex-shrink-0">
+                                    <div className="w-2 h-2 rounded-full bg-gradient-to-br from-blue-500 to-purple-500" />
+                                  </div>
+                                  <span className="text-slate-300">{item}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                          <div className="flex flex-wrap gap-2 pt-2">
+                            {phase.dimensions.map((dim, dimIdx) => (
+                              <Badge key={dimIdx} variant="outline" className="text-xs bg-slate-700/30 border-slate-600 text-slate-300">
+                                {DIMENSIONS.find(d => d.key === dim)?.label || dim}
+                              </Badge>
+                            ))}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  )
+                })}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Role-Specific Recommendations */}
+          <Card className="bg-slate-900/80 backdrop-blur-xl border-slate-800 shadow-2xl">
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl shadow-lg shadow-emerald-500/25">
+                  <Target className="h-5 w-5 text-white" />
+                </div>
+                <CardTitle className="text-xl text-white">ข้อเสนอแนะตามบทบาทหน้าที่</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-3">
+                {result.hrdRoadmap.roleSpecificRecommendations.map((rec, idx) => (
+                  <li key={idx} className="flex items-start gap-3">
+                    <div className="mt-0.5 flex-shrink-0">
+                      <CheckCircle2 className="h-5 w-5 text-emerald-400" />
+                    </div>
+                    <span className="text-slate-300">{rec}</span>
+                  </li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
