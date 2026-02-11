@@ -96,6 +96,12 @@ export default function AssessmentResultPage() {
     setLoading(false)
   }, [router])
 
+  const handleDownloadPDF = () => {
+    if (typeof window !== 'undefined') {
+      window.print()
+    }
+  }
+
   const handleDownloadCSV = () => {
     try {
       if (!result) {
@@ -155,7 +161,7 @@ export default function AssessmentResultPage() {
           [`เวลา: ${phase.timeframe}`],
           [`เป้าหมาย: ${phase.goal}`],
           ['Priority', phase.priority],
-          ...phase.actionItems.map(item => [item]),
+          ...(Array.isArray(phase.actionItems) ? phase.actionItems.map(item => [item]) : []),
         ]),
       ]
 
@@ -583,6 +589,10 @@ export default function AssessmentResultPage() {
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button onClick={handleDownloadPDF} className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white shadow-lg shadow-blue-500/25 border-0 px-8">
+              <Download className="mr-2 h-4 w-4" />
+              Download PDF
+            </Button>
             <Button onClick={handleDownloadCSV} className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white shadow-lg shadow-emerald-500/25 border-0 px-8">
               <DownloadIcon className="mr-2 h-4 w-4" />
               Download CSV
