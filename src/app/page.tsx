@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Activity, Database, MessageSquare, Lightbulb, Shield, ArrowRight, Users, BarChart3, Clock, BookOpen, Award, Target, GraduationCap, Sparkles, Zap, CheckCircle2, TrendingUp, Brain } from 'lucide-react'
+import { Activity, Database, MessageSquare, Lightbulb, Shield, ArrowRight, Users, BarChart3, Clock, BookOpen, Award, Target, GraduationCap, Sparkles, Zap, CheckCircle2, TrendingUp, Brain, Download } from 'lucide-react'
 
 export default function Home() {
   return (
@@ -66,12 +66,6 @@ export default function Home() {
                 <Activity className="mr-2.5 h-5 w-5" />
                 เริ่มทำแบบประเมิน
                 <ArrowRight className="ml-2.5 h-5 w-5" />
-              </Button>
-            </Link>
-            <Link href="/dashboard">
-              <Button size="lg" variant="outline" className="text-lg px-8 py-6 border-slate-700 text-slate-300 hover:bg-slate-800 hover:text-white hover:border-slate-600 h-auto backdrop-blur-sm">
-                <BarChart3 className="mr-2.5 h-5 w-5" />
-                ดูผลการประเมิน
               </Button>
             </Link>
           </div>
@@ -241,7 +235,7 @@ export default function Home() {
                   { icon: <Clock className="h-6 w-6" />, title: 'ใช้เวลาเพียง 15-20 นาที', desc: 'แบบประเมิน 25 ข้อคำถามสถานการณ์จำลอง' },
                   { icon: <Users className="h-6 w-6" />, title: 'ปรับให้เหมาะกับบทบาท', desc: 'ครอบคลุม 5 กลุ่มบทบาทหน้าที่ของบุคลากร' },
                   { icon: <Zap className="h-6 w-6" />, title: 'ผลลัพธ์ทันที', desc: 'รู้ผลการประเมินและคำแนะนำการพัฒนาทันที' },
-                  { icon: <Shield className="h-6 w-6" />, title: 'ความเป็นส่วนตัว', desc: 'ข้อมูลของคุณจะถูกเก็บเป็นความลับ' },
+                  { icon: <Shield className="h-6 w-6" />, title: 'ความเป็นส่วนตัว', desc: 'ไม่เก็บข้อมูลผู้ใช้งาน สามารถดาวน์โหลดรายงาน CSV ได้' },
                 ].map((item, idx) => (
                   <FeatureItem key={idx} icon={item.icon} title={item.title} description={item.desc} />
                 ))}
@@ -267,6 +261,70 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Privacy & Features Section */}
+      <section className="py-20 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/50 to-emerald-900/50" />
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center mb-16">
+            <Badge className="mb-4 bg-slate-800/50 text-emerald-400 border-emerald-500/30">
+              <Shield className="mr-1.5 h-3.5 w-3.5" />
+              ความเป็นส่วนตัว
+            </Badge>
+            <h3 className="text-4xl md:text-5xl font-bold mb-4 text-white">
+              ข้อมูลของคุณปลอดภัย
+            </h3>
+            <p className="text-slate-400 text-lg max-w-2xl mx-auto">
+              เราให้ความสำคัญกับความเป็นส่วนตัวของข้อมูลของคุณ
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
+            <PrivacyCard
+              icon={<Shield className="h-8 w-8" />}
+              title="ไม่เก็บข้อมูล"
+              description="ข้อมูลของคุณไม่ถูกส่งไปยัง server หรือฐานข้อมูล"
+              color="emerald"
+            />
+            <PrivacyCard
+              icon={<Database className="h-8 w-8" />}
+              title="เก็บในเบราว์เซอร์"
+              description="ข้อมูลอยู่เฉพาะบนเบราว์เซอร์ของคุณเท่านั้น"
+              color="blue"
+            />
+            <PrivacyCard
+              icon={<Download className="h-8 w-8" />}
+              title="ดาวน์โหลดรายงาน"
+              description="สามารถดาวน์โหลดผลการประเมินเป็นไฟล์ CSV ได้"
+              color="purple"
+            />
+          </div>
+
+          <Card className="bg-slate-900/80 backdrop-blur-xl border-slate-800 shadow-2xl max-w-3xl mx-auto">
+            <CardHeader>
+              <CardTitle className="text-2xl text-white text-center">ข้อมูลที่เก็บ</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="h-5 w-5 text-emerald-400 mt-0.5 flex-shrink-0" />
+                <p className="text-slate-400">ข้อมูลการประเมินถูกเก็บชั่วคราวใน <strong>sessionStorage</strong> ของเบราว์เซอร์</p>
+              </div>
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="h-5 w-5 text-emerald-400 mt-0.5 flex-shrink-0" />
+                <p className="text-slate-400">ข้อมูลจะถูกลบเมื่อปิดแท็บหรือปิดเบราว์เซอร์</p>
+              </div>
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="h-5 w-5 text-emerald-400 mt-0.5 flex-shrink-0" />
+                <p className="text-slate-400">ไม่มีการติดตาม ไม่มีการส่งข้อมูลส่วนบุคคล</p>
+              </div>
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="h-5 w-5 text-emerald-400 mt-0.5 flex-shrink-0" />
+                <p className="text-slate-400">API ทำงานบนเบราว์เซอร์ ไม่มีการบันทึกลงฐานข้อมูล</p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-teal-500/10" />
@@ -276,6 +334,8 @@ export default function Home() {
           </h3>
           <p className="text-slate-400 text-lg mb-10 max-w-2xl mx-auto">
             เริ่มต้นวัดสมรรถนะและรับแนวทางการพัฒนาที่เหมาะสมกับคุณ
+            <br />
+            <span className="text-sm text-emerald-400">ไม่เก็บข้อมูล ความเป็นส่วนตัว 100%</span>
           </p>
           <Link href="/assessments/new">
             <Button size="lg" className="text-lg px-10 py-6 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white shadow-2xl shadow-emerald-500/30 border-0 h-auto">
@@ -307,6 +367,39 @@ export default function Home() {
         </div>
       </footer>
     </div>
+  )
+}
+
+function PrivacyCard({ icon, title, description, color }: {
+  icon: React.ReactNode
+  title: string
+  description: string
+  color: string
+}) {
+  const colorClasses = {
+    emerald: 'from-emerald-500/10 to-emerald-600/10 border-emerald-500/20 hover:border-emerald-500/40',
+    blue: 'from-blue-500/10 to-blue-600/10 border-blue-500/20 hover:border-blue-500/40',
+    purple: 'from-purple-500/10 to-purple-600/10 border-purple-500/20 hover:border-purple-500/40',
+  }
+
+  const iconClasses = {
+    emerald: 'bg-emerald-500/20 text-emerald-400',
+    blue: 'bg-blue-500/20 text-blue-400',
+    purple: 'bg-purple-500/20 text-purple-400',
+  }
+
+  return (
+    <Card className={`bg-gradient-to-br ${colorClasses[color as keyof typeof colorClasses]} hover:shadow-2xl transition-all duration-300 border-2 backdrop-blur-sm group`}>
+      <CardHeader>
+        <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-4 ${iconClasses[color as keyof typeof iconClasses]} group-hover:scale-110 transition-transform`}>
+          {icon}
+        </div>
+        <CardTitle className="text-xl text-white group-hover:text-emerald-400 transition-colors">{title}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <p className="text-slate-400 text-sm leading-relaxed">{description}</p>
+      </CardContent>
+    </Card>
   )
 }
 

@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Prompt, Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
-import { AuthProvider } from "@/contexts/AuthContext";
 
 const prompt = Prompt({
   variable: "--font-prompt",
@@ -49,10 +48,8 @@ export default function RootLayout({
       <body
         className={`${prompt.variable} ${inter.variable} antialiased bg-background text-foreground font-prompt`}
       >
-        <AuthProvider>
-          {children}
-          <Toaster />
-        </AuthProvider>
+        {children}
+        <Toaster />
       </body>
     </html>
   );

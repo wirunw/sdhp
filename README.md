@@ -1,58 +1,61 @@
-# 🚀 Welcome to Z.ai Code Scaffold
+# 🏥 SDHP Assessment System
 
-A modern, production-ready web application scaffold powered by cutting-edge technologies, designed to accelerate your development with [Z.ai](https://chat.z.ai)'s AI-powered coding assistance.
+ระบบประเมินสมรรถนะดิจิทัลสำหรับบุคลากรทางการแพทย์และสาธารณสุข ตามกรอบ SDHP-HX (Smart Digital Health People Hybrid-Expanded)
 
-## ✨ Technology Stack
+## 🔒 ความเป็นส่วนตัว (Privacy First)
 
-This scaffold provides a robust foundation built with:
+**ระบบนี้ไม่เก็บข้อมูลส่วนบุคคลของคุณ**
 
-### 🎯 Core Framework
-- **⚡ Next.js 16** - The React framework for production with App Router
-- **📘 TypeScript 5** - Type-safe JavaScript for better developer experience
-- **🎨 Tailwind CSS 4** - Utility-first CSS framework for rapid UI development
+- ✅ **ไม่ส่งข้อมูลไป server** - ข้อมูลการประเมินอยู่เฉพาะบนเบราว์เซอร์ของคุณ
+- ✅ **เก็บชั่วคราวเท่านั้น** - ข้อมูลอยู่ใน sessionStorage และจะถูกลบเมื่อปิดแท็บหรือปิดเบราว์เซอร์
+- ✅ **ไม่มีการติดตาม** - ไม่มี tracking, analytics, หรือการเก็บข้อมูลการใช้งาน
+- ✅ **ดาวน์โหลดรายงานได้** - สามารถบันทึกผลการประเมินเป็นไฟล์ CSV เพื่อเก็บไว้ใช้เอง
 
-### 🧩 UI Components & Styling
-- **🧩 shadcn/ui** - High-quality, accessible components built on Radix UI
-- **🎯 Lucide React** - Beautiful & consistent icon library
-- **🌈 Framer Motion** - Production-ready motion library for React
-- **🎨 Next Themes** - Perfect dark mode in 2 lines of code
+## ✨ จุดเด่น
 
-### 📋 Forms & Validation
-- **🎣 React Hook Form** - Performant forms with easy validation
-- **✅ Zod** - TypeScript-first schema validation
+- 🎯 **ประเมินตามกรอบ SDHP-HX** - กรอบมาตรฐานสำหรับบุคลากรสาธารณสุขยุคดิจิทัล
+- 📊 **5 มิติสมรรถนะ** - Tech Literacy, Data Analysis, Digital Communication, Innovation Mindset, Digital Ethics
+- ⏱️ **ใช้เวลาเพียง 15-20 นาที** - 25 ข้อคำถามสถานการณ์จำลอง
+- 🎓 **แนะนำการพัฒนา 3 ระยะ** - Quick Win, Upskill, System-level
+- 💾 **ดาวน์โหลดรายงาน CSV** - เก็บผลลัพธ์ไว้ใช้เองได้
+- 📱 **Responsive Design** - ใช้งานได้บนทุกอุปกรณ์
 
-### 🔄 State Management & Data Fetching
-- **🐻 Zustand** - Simple, scalable state management
-- **🔄 TanStack Query** - Powerful data synchronization for React
-- **🌐 Fetch** - Promise-based HTTP request
+## 🚀 เทคโนโลยีที่ใช้
 
-### 🗄️ Database & Backend
-- **🗄️ Prisma** - Next-generation TypeScript ORM
-- **🔐 NextAuth.js** - Complete open-source authentication solution
+- **Next.js 16** - React Framework สำหรับ production
+- **TypeScript 5** - Type-safe development
+- **Tailwind CSS 4** - Utility-first CSS framework
+- **shadcn/ui** - High-quality UI components
+- **Lucide React** - Beautiful icon library
 
-### 🎨 Advanced UI Features
-- **📊 TanStack Table** - Headless UI for building tables and datagrids
-- **🖱️ DND Kit** - Modern drag and drop toolkit for React
-- **📊 Recharts** - Redefined chart library built with React and D3
-- **🖼️ Sharp** - High performance image processing
+## 📋 5 มิติสมรรถนะดิจิทัล
 
-### 🌍 Internationalization & Utilities
-- **🌍 Next Intl** - Internationalization library for Next.js
-- **📅 Date-fns** - Modern JavaScript date utility library
-- **🪝 ReactUse** - Collection of essential React hooks for modern development
+1. **Tech Literacy (TL)** - การรู้เท่าทันเทคโนโลยี
+   - การเลือกใช้เครื่องมือดิจิทัลให้เหมาะสมกับภารกิจ
+   - ปรับใช้และแก้ไขปัญหา
 
-## 🎯 Why This Scaffold?
+2. **Data Analysis (DA)** - การวิเคราะห์ข้อมูล
+   - การใช้ข้อมูลสุขภาพเพื่อสนับสนุนการตัดสินใจ
+   - วิเคราะห์และปรับปรุง
 
-- **🏎️ Fast Development** - Pre-configured tooling and best practices
-- **🎨 Beautiful UI** - Complete shadcn/ui component library with advanced interactions
-- **🔒 Type Safety** - Full TypeScript configuration with Zod validation
-- **📱 Responsive** - Mobile-first design principles with smooth animations
-- **🗄️ Database Ready** - Prisma ORM configured for rapid backend development
-- **🔐 Auth Included** - NextAuth.js for secure authentication flows
-- **📊 Data Visualization** - Charts, tables, and drag-and-drop functionality
-- **🌍 i18n Ready** - Multi-language support with Next Intl
-- **🚀 Production Ready** - Optimized build and deployment settings
-- **🤖 AI-Friendly** - Structured codebase perfect for AI assistance
+3. **Digital Communication (DC)** - การสื่อสารดิจิทัล
+   - การสื่อสารในองค์กรและกับประชาชน
+   - การทำงานทีมและการบริการผู้ป่วย
+
+4. **Innovation Mindset (IM)** - แนวคิดเชิงนวัตกรรม
+   - การคิดค้นแนวทางใหม่ๆ
+   - การทดลองและประยุกต์
+
+5. **Digital Ethics (DE)** - จริยธรรมดิจิทัล
+   - ความตระหนักเรื่องความเป็นส่วนตัว
+   - จริยธรรมและการปฏิบัติตาม
+
+## 🎯 ระดับสมรรถนะที่วัดได้
+
+- **AWARENESS (A)** - ระดับตระหนัก: เริ่มต้นรับรู้และเข้าใจแนวคิดพื้นฐาน
+- **LITERACY (L)** - ระดับรู้ความสามารถ: ใช้งานเทคโนโลยีและเครื่องมือดิจิทัลได้ในระดับพื้นฐาน
+- **PROFICIENCY (P)** - ระดับชำนาญ: มีทักษะและสามารถใช้งานได้อย่างมีประสิทธิภาพ
+- **EXPERTISE (E)** - ระดับเชี่ยวชาญ: เชี่ยวชาญและสามารถนำไปประยุกต์ใช้ได้อย่างครบถ้วน
 
 ## 🚀 Quick Start
 
@@ -70,72 +73,60 @@ bun run build
 bun start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to see your application running.
+เปิด [http://localhost:3000](http://localhost:3000) เพื่อเริ่มใช้งาน
 
-## 🤖 Powered by Z.ai
+## 📖 วิธีใช้งาน
 
-This scaffold is optimized for use with [Z.ai](https://chat.z.ai) - your AI assistant for:
+1. **เริ่มทำแบบประเมิน** - กรอกข้อมูลส่วนตัวและตอบคำถาม 25 ข้อ
+2. **ดูผลลัพธ์** - รับผลการประเมินทันทีพร้อมคำแนะนำการพัฒนา
+3. **ดาวน์โหลดรายงาน** - กดปุ่ม Download CSV เพื่อเก็บผลลัพธ์ไว้ใช้เอง
 
-- **💻 Code Generation** - Generate components, pages, and features instantly
-- **🎨 UI Development** - Create beautiful interfaces with AI assistance  
-- **🔧 Bug Fixing** - Identify and resolve issues with intelligent suggestions
-- **📝 Documentation** - Auto-generate comprehensive documentation
-- **🚀 Optimization** - Performance improvements and best practices
+## 🎓 เกี่ยวกับโครงการ
 
-Ready to build something amazing? Start chatting with Z.ai at [chat.z.ai](https://chat.z.ai) and experience the future of AI-powered development!
+**รายงาน Capstone Project**
 
-## 📁 Project Structure
+- **ประเภท:** งานเสนอแนะแนวทางหรือนโยบาย (Policy Advocacy)
+- **หลักสูตร:** ประกาศนียบัตรผู้บริหารดิจิทัลทางการแพทย์ รุ่นที่ 1 กลุ่มที่ 6 ปีการศึกษา 2568
+- **Focus:** Human Capital: Digital Health
+
+## 📁 โครงสร้างโปรเจกต์
 
 ```
 src/
-├── app/                 # Next.js App Router pages
-├── components/          # Reusable React components
-│   └── ui/             # shadcn/ui components
-├── hooks/              # Custom React hooks
-└── lib/                # Utility functions and configurations
+├── app/                      # Next.js App Router pages
+│   ├── page.tsx             # หน้าแรก
+│   ├── assessments/         # หน้าการประเมิน
+│   │   ├── new/             # เริ่มทำแบบประเมินใหม่
+│   │   └── result/          # หน้าผลลัพธ์
+│   └── api/                 # API Routes
+│       └── assessments/     # Assessment API
+├── components/              # Reusable React components
+│   └── ui/                 # shadcn/ui components
+├── lib/                    # Utility functions
+│   ├── recommendations.ts   # HRD Roadmap algorithm
+│   └── db.ts              # Database utilities
+└── hooks/                  # Custom React hooks
 ```
 
-## 🎨 Available Features & Components
+## 🛡️ ข้อมูลที่เก็บ (Data Storage)
 
-This scaffold includes a comprehensive set of modern web development tools:
+### Client-side Only
+- **sessionStorage** - เก็บข้อมูลการประเมินชั่วคราว
+- **ไม่มีการส่งข้อมูลไปยัง server**
+- **ไม่มีการบันทึกลงฐานข้อมูล**
+- **ข้อมูลถูกลบอัตโนมัติเมื่อปิดแท็บหรือปิดเบราว์เซอร์**
 
-### 🧩 UI Components (shadcn/ui)
-- **Layout**: Card, Separator, Aspect Ratio, Resizable Panels
-- **Forms**: Input, Textarea, Select, Checkbox, Radio Group, Switch
-- **Feedback**: Alert, Toast (Sonner), Progress, Skeleton
-- **Navigation**: Breadcrumb, Menubar, Navigation Menu, Pagination
-- **Overlay**: Dialog, Sheet, Popover, Tooltip, Hover Card
-- **Data Display**: Badge, Avatar, Calendar
+### ข้อมูลที่ผู้ใช้สามารถดาวน์โหลดได้
+- ผลการประเมินรายมิติ (5 มิติ)
+- คะแนนและระดับสมรรถนะ
+- ความคิดเห็นเชิงลึก (Feedback)
+- HRD Roadmap: แผนพัฒนาทักษะ 3 ระยะ
+- ข้อเสนอแนะตามบทบาทหน้าที่
 
-### 📊 Advanced Data Features
-- **Tables**: Powerful data tables with sorting, filtering, pagination (TanStack Table)
-- **Charts**: Beautiful visualizations with Recharts
-- **Forms**: Type-safe forms with React Hook Form + Zod validation
+## 📝 License
 
-### 🎨 Interactive Features
-- **Animations**: Smooth micro-interactions with Framer Motion
-- **Drag & Drop**: Modern drag-and-drop functionality with DND Kit
-- **Theme Switching**: Built-in dark/light mode support
-
-### 🔐 Backend Integration
-- **Authentication**: Ready-to-use auth flows with NextAuth.js
-- **Database**: Type-safe database operations with Prisma
-- **API Client**: HTTP requests with Fetch + TanStack Query
-- **State Management**: Simple and scalable with Zustand
-
-### 🌍 Production Features
-- **Internationalization**: Multi-language support with Next Intl
-- **Image Optimization**: Automatic image processing with Sharp
-- **Type Safety**: End-to-end TypeScript with Zod validation
-- **Essential Hooks**: 100+ useful React hooks with ReactUse for common patterns
-
-## 🤝 Get Started with Z.ai
-
-1. **Clone this scaffold** to jumpstart your project
-2. **Visit [chat.z.ai](https://chat.z.ai)** to access your AI coding assistant
-3. **Start building** with intelligent code generation and assistance
-4. **Deploy with confidence** using the production-ready setup
+โครงการนี้จัดทำขึ้นเพื่อการศึกษาและพัฒนาสมรรถนะดิจิทัลของบุคลากรทางการแพทย์และสาธารณสุข
 
 ---
 
-Built with ❤️ for the developer community. Supercharged by [Z.ai](https://chat.z.ai) 🚀
+พัฒนาตามกรอบ SDHP-HX (Smart Digital Health People Hybrid-Expanded)
