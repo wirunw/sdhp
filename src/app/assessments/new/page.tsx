@@ -408,7 +408,9 @@ export default function NewAssessmentPage() {
 
       if (response.ok) {
         const data = await response.json()
-        router.push(`/assessments/${data.assessmentId}`)
+        // เก็บข้อมูลใน sessionStorage และ navigate ไปหน้าผลลัพธ์
+        sessionStorage.setItem('assessmentResult', JSON.stringify(data.data))
+        router.push('/assessments/result')
       } else {
         alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล')
       }
