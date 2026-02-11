@@ -106,8 +106,17 @@ export default function AssessmentResultPage() {
     try {
       if (!result) {
         console.error('No result data available')
+        alert('ไม่มีข้อมูลผลการประเมิน กรุณาทำแบบประเมินใหม่')
         return
       }
+
+      // Debug: log the data structure
+      console.log('=== CSV Download Debug ===')
+      console.log('Result:', result)
+      console.log('HRD Roadmap:', result.hrdRoadmap)
+      console.log('Phases:', result.hrdRoadmap?.phases)
+      console.log('Immediate Actions:', result.hrdRoadmap?.immediateActions, 'Type:', typeof result.hrdRoadmap?.immediateActions, 'IsArray:', Array.isArray(result.hrdRoadmap?.immediateActions))
+      console.log('Role Specific Recommendations:', result.hrdRoadmap?.roleSpecificRecommendations, 'Type:', typeof result.hrdRoadmap?.roleSpecificRecommendations, 'IsArray:', Array.isArray(result.hrdRoadmap?.roleSpecificRecommendations))
 
       const rows = [
         ['SDHP Digital Competency Assessment Report'],
