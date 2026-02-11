@@ -97,70 +97,99 @@ export default function AssessmentResultPage() {
   }, [router])
 
   const handleDownloadCSV = () => {
-    if (!result) return
+    try {
+      if (!result) {
+        console.error('No result data available')
+        return
+      }
 
-    const rows = [
-      ['SDHP Digital Competency Assessment Report'],
-      ['', ''],
-      ['ผู้ประเมิน', result.formData.name || 'ไม่ระบุ'],
-      ['แผนก/กลุ่มงาน', result.formData.department || 'ไม่ระบุ'],
-      ['บทบาทหน้าที่', result.formData.role.replace(/_/g, ' ')],
-      ['ประสบการณ์การทำงาน', result.formData.experienceLevel.replace(/_/g, ' ')],
-      ['ประเภทหน่วยงาน', result.formData.organizationType.replace(/_/g, ' ')],
-      ['ความถนัดดิจิทัล', result.formData.selfAssessedProficiency.replace(/_/g, ' ')],
-      ['วันที่ประเมิน', new Date(result.createdAt).toLocaleString('th-TH')],
-      ['', ''],
-      ['=== ผลการประเมินรายมิติ ==='],
-      ['มิติ', 'คะแนน', 'ระดับ', 'คำอธิบาย'],
-      ['การรู้เท่าทันเทคโนโลยี', result.scores.techLiteracyScore?.toFixed(2) || '-', result.scores.techLiteracyLevel, LEVEL_DESCRIPTIONS[result.scores.techLiteracyLevel as keyof typeof LEVEL_DESCRIPTIONS]],
-      ['การวิเคราะห์ข้อมูล', result.scores.dataAnalysisScore?.toFixed(2) || '-', result.scores.dataAnalysisLevel, LEVEL_DESCRIPTIONS[result.scores.dataAnalysisLevel as keyof typeof LEVEL_DESCRIPTIONS]],
-      ['การสื่อสารดิจิทัล', result.scores.digitalCommunicationScore?.toFixed(2) || '-', result.scores.digitalCommunicationLevel, LEVEL_DESCRIPTIONS[result.scores.digitalCommunicationLevel as keyof typeof LEVEL_DESCRIPTIONS]],
-      ['แนวคิดเชิงนวัตกรรม', result.scores.innovationMindsetScore?.toFixed(2) || '-', result.scores.innovationMindsetLevel, LEVEL_DESCRIPTIONS[result.scores.innovationMindsetLevel as keyof typeof LEVEL_DESCRIPTIONS]],
-      ['จริยธรรมดิจิทัล', result.scores.digitalEthicsScore?.toFixed(2) || '-', result.scores.digitalEthicsLevel, LEVEL_DESCRIPTIONS[result.scores.digitalEthicsLevel as keyof typeof LEVEL_DESCRIPTIONS]],
-      ['', ''],
-      ['คะแนนเฉลี่ยรวม', result.scores.overallAverageScore?.toFixed(2) || '-'],
-      ['ระดับสมรรถนะโดยรวม', result.scores.overallCompetencyLevel, LEVEL_DESCRIPTIONS[result.scores.overallCompetencyLevel as keyof typeof LEVEL_DESCRIPTIONS]],
-      ['', ''],
-      ['=== ความคิดเห็นเชิงลึก ==='],
-      ['อุปสรรคหรือความท้าทาย', result.feedback.challenges || '-'],
-      ['ข้อเสนอแนะ', result.feedback.suggestions || '-'],
-      ['ความต้องการด้านการอบรม', result.feedback.trainingNeeds || '-'],
-      ['', ''],
-      ['=== HRD Roadmap Recommendations ==='],
-      ['Overall Strategy', result.hrdRoadmap.overallStrategy],
-      ['', ''],
-      ['Gap Analysis'],
-      ['มิติที่คะแนนต่ำสุด', result.hrdRoadmap.gapAnalysis.lowestDimension],
-      ['คะแนนต่ำสุด', result.hrdRoadmap.gapAnalysis.lowestScore?.toFixed(2) || '-'],
-      ['มิติที่ต้องเร่งพัฒนา', Array.isArray(result.hrdRoadmap.gapAnalysis.priorityDimensions) ? result.hrdRoadmap.gapAnalysis.priorityDimensions.join(', ') : '-'],
-      ['', ''],
+      const rows = [
+        ['SDHP Digital Competency Assessment Report'],
+        ['', ''],
+        ['ผู้ประเมิน', result.formData.name || 'ไม่ระบุ'],
+        ['แผนก/กลุ่มงาน', result.formData.department || 'ไม่ระบุ'],
+        ['บทบาทหน้าที่', result.formData.role.replace(/_/g, ' ')],
+        ['ประสบการณ์การทำงาน', result.formData.experienceLevel.replace(/_/g, ' ')],
+        ['ประเภทหน่วยงาน', result.formData.organizationType.replace(/_/g, ' ')],
+        ['ความถนัดดิจิทัล', result.formData.selfAssessedProficiency.replace(/_/g, ' ')],
+        ['วันที่ประเมิน', new Date(result.createdAt).toLocaleString('th-TH')],
+        ['', ''],
+        ['=== ผลการประเมินรายมิติ ==='],
+        ['มิติ', 'คะแนน', 'ระดับ', 'คำอธิบาย'],
+        ['การรู้เท่าทันเทคโนโลยี', result.scores.techLiteracyScore?.toFixed(2) || '-', result.scores.techLiteracyLevel, LEVEL_DESCRIPTIONS[result.scores.techLiteracyLevel as keyof typeof LEVEL_DESCRIPTIONS]],
+        ['การวิเคราะห์ข้อมูล', result.scores.dataAnalysisScore?.toFixed(2) || '-', result.scores.dataAnalysisLevel, LEVEL_DESCRIPTIONS[result.scores.dataAnalysisLevel as keyof typeof LEVEL_DESCRIPTIONS]],
+        ['การสื่อสารดิจิทัล', result.scores.digitalCommunicationScore?.toFixed(2) || '-', result.scores.digitalCommunicationLevel, LEVEL_DESCRIPTIONS[result.scores.digitalCommunicationLevel as keyof typeof LEVEL_DESCRIPTIONS]],
+        ['แนวคิดเชิงนวัตกรรม', result.scores.innovationMindsetScore?.toFixed(2) || '-', result.scores.innovationMindsetLevel, LEVEL_DESCRIPTIONS[result.scores.innovationMindsetLevel as keyof typeof LEVEL_DESCRIPTIONS]],
+        ['จริยธรรมดิจิทัล', result.scores.digitalEthicsScore?.toFixed(2) || '-', result.scores.digitalEthicsLevel, LEVEL_DESCRIPTIONS[result.scores.digitalEthicsLevel as keyof typeof LEVEL_DESCRIPTIONS]],
+        ['', ''],
+        ['คะแนนเฉลี่ยรวม', result.scores.overallAverageScore?.toFixed(2) || '-'],
+        ['ระดับสมรรถนะโดยรวม', result.scores.overallCompetencyLevel, LEVEL_DESCRIPTIONS[result.scores.overallCompetencyLevel as keyof typeof LEVEL_DESCRIPTIONS]],
+        ['', ''],
+        ['=== ความคิดเห็นเชิงลึก ==='],
+        ['อุปสรรคหรือความท้าทาย', result.feedback.challenges || '-'],
+        ['ข้อเสนอแนะ', result.feedback.suggestions || '-'],
+        ['ความต้องการด้านการอบรม', result.feedback.trainingNeeds || '-'],
+        ['', ''],
+        ['=== HRD Roadmap Recommendations ==='],
+        ['Overall Strategy', result.hrdRoadmap.overallStrategy],
+        ['', ''],
+        ['Gap Analysis'],
+        ['มิติที่คะแนนต่ำสุด', result.hrdRoadmap.gapAnalysis.lowestDimension],
+        ['คะแนนต่ำสุด', result.hrdRoadmap.gapAnalysis.lowestScore?.toFixed(2) || '-'],
+        ['มิติที่ต้องเร่งพัฒนา', Array.isArray(result.hrdRoadmap.gapAnalysis.priorityDimensions) ? result.hrdRoadmap.gapAnalysis.priorityDimensions.join(', ') : '-'],
+        ['', ''],
       ['Immediate Actions'],
-      ...result.hrdRoadmap.immediateActions.map(action => [action]),
+      ...(Array.isArray(result.hrdRoadmap.immediateActions) 
+        ? result.hrdRoadmap.immediateActions.map(action => [action]) 
+        : [['ไม่ระบุ']]),
       ['', ''],
       ['Role-Specific Recommendations'],
-      ...result.hrdRoadmap.roleSpecificRecommendations.map(rec => [rec]),
-      ['', ''],
-      ['Phase Recommendations'],
-      ...result.hrdRoadmap.phases.flatMap(phase => [
-        '',
-        [`${phase.phase}: ${phase.phaseName}`],
-        [`เวลา: ${phase.timeframe}`],
-        [`เป้าหมาย: ${phase.goal}`],
-        ['Priority', phase.priority],
-        ...phase.actionItems.map(item => [item]),
-      ]),
-    ]
+      ...(Array.isArray(result.hrdRoadmap.roleSpecificRecommendations) 
+        ? result.hrdRoadmap.roleSpecificRecommendations.map(rec => [rec]) 
+        : [['ไม่ระบุ']]),
+        ['', ''],
+        ['Phase Recommendations'],
+        ...result.hrdRoadmap.phases.flatMap(phase => [
+          '',
+          [`${phase.phase}: ${phase.phaseName}`],
+          [`เวลา: ${phase.timeframe}`],
+          [`เป้าหมาย: ${phase.goal}`],
+          ['Priority', phase.priority],
+          ...phase.actionItems.map(item => [item]),
+        ]),
+      ]
 
-    const csvContent = rows.map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')).join('\n')
-    const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' })
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = `SDHP-Assessment-${new Date().toISOString().split('T')[0]}.csv`
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-    URL.revokeObjectURL(url)
+      const csvContent = rows.map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')).join('\n')
+      console.log('CSV Content generated, length:', csvContent.length)
+
+      // Create blob with BOM for Excel compatibility
+      const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' })
+      console.log('Blob created, size:', blob.size)
+
+      const url = URL.createObjectURL(blob)
+      console.log('Object URL created:', url)
+
+      const link = document.createElement('a')
+      link.href = url
+      link.download = `SDHP-Assessment-${new Date().toISOString().split('T')[0]}.csv`
+      link.style.display = 'none'
+      
+      document.body.appendChild(link)
+      console.log('Link appended to body')
+
+      link.click()
+      console.log('Link clicked')
+
+      // Clean up
+      setTimeout(() => {
+        document.body.removeChild(link)
+        URL.revokeObjectURL(url)
+        console.log('Cleanup completed')
+      }, 100)
+    } catch (error) {
+      console.error('Error downloading CSV:', error)
+      alert('เกิดข้อผิดพลาดในการดาวน์โหลด CSV กรุณาลองใหม่')
+    }
   }
 
   const getScoreColor = (score: number | null) => {
@@ -420,14 +449,18 @@ export default function AssessmentResultPage() {
             </CardHeader>
             <CardContent>
               <ul className="space-y-3">
-                {result.hrdRoadmap.immediateActions.map((action, idx) => (
-                  <li key={idx} className="flex items-start gap-3">
-                    <div className="mt-0.5 flex-shrink-0">
-                      <CheckCircle2 className="h-5 w-5 text-amber-400" />
-                    </div>
-                    <span className="text-white">{action}</span>
-                  </li>
-                ))}
+                {Array.isArray(result.hrdRoadmap.immediateActions) ? (
+                  result.hrdRoadmap.immediateActions.map((action, idx) => (
+                    <li key={idx} className="flex items-start gap-3">
+                      <div className="mt-0.5 flex-shrink-0">
+                        <CheckCircle2 className="h-5 w-5 text-amber-400" />
+                      </div>
+                      <span className="text-white">{action}</span>
+                    </li>
+                  ))
+                ) : (
+                  <li className="text-slate-400">ไม่ระบุ</li>
+                )}
               </ul>
             </CardContent>
           </Card>
@@ -530,14 +563,18 @@ export default function AssessmentResultPage() {
             </CardHeader>
             <CardContent>
               <ul className="space-y-3">
-                {result.hrdRoadmap.roleSpecificRecommendations.map((rec, idx) => (
-                  <li key={idx} className="flex items-start gap-3">
-                    <div className="mt-0.5 flex-shrink-0">
-                      <CheckCircle2 className="h-5 w-5 text-emerald-400" />
-                    </div>
-                    <span className="text-slate-300">{rec}</span>
-                  </li>
-                ))}
+                {Array.isArray(result.hrdRoadmap.roleSpecificRecommendations) ? (
+                  result.hrdRoadmap.roleSpecificRecommendations.map((rec, idx) => (
+                    <li key={idx} className="flex items-start gap-3">
+                      <div className="mt-0.5 flex-shrink-0">
+                        <CheckCircle2 className="h-5 w-5 text-emerald-400" />
+                      </div>
+                      <span className="text-slate-300">{rec}</span>
+                    </li>
+                  ))
+                ) : (
+                  <li className="text-slate-400">ไม่ระบุ</li>
+                )}
               </ul>
             </CardContent>
           </Card>
