@@ -304,8 +304,10 @@ export default function AssessmentResultPage() {
           {/* Dimension Scores */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {DIMENSIONS.map((dim) => {
-              const score = result.scores[dim.key as keyof typeof result.scores] as number | null
-              const level = result.scores[`${dim.key}Level` as keyof typeof result.scores] as string
+              const scoreKey = `${dim.key}Score` as keyof typeof result.scores
+              const levelKey = `${dim.key}Level` as keyof typeof result.scores
+              const score = result.scores[scoreKey] as number | null
+              const level = result.scores[levelKey] as string
               const Icon = dim.icon
 
               return (
